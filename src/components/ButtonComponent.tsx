@@ -9,14 +9,23 @@ import {
 
 const {height, width} = Dimensions.get('screen');
 
+interface IStyleProps {
+  [key: string]: string | number;
+}
 interface Props {
   title: String;
   onPress: () => void;
+  styleProps?: IStyleProps;
 }
 
-const ButtonComponent: FC<Props> = ({title, onPress}) => {
+const ButtonComponent: FC<Props> = ({title, onPress, styleProps}) => {
   return (
-    <TouchableOpacity style={styles.container} onPress={onPress}>
+    <TouchableOpacity
+      style={[
+        styles.container,
+        styleProps !== undefined ? {...styleProps} : null,
+      ]}
+      onPress={onPress}>
       <Text style={styles.text}>{title}</Text>
     </TouchableOpacity>
   );

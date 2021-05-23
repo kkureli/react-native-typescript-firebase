@@ -2,14 +2,6 @@ import React, {FC} from 'react';
 import {Dimensions, StyleSheet, Text, View} from 'react-native';
 import ButtonComponent from './ButtonComponent';
 
-interface Props {
-  msg: string;
-  approved: boolean;
-  timeStamp: number;
-  onApprove: () => void;
-  onReject: () => void;
-}
-
 const {width, height} = Dimensions.get('screen');
 
 const formatTime = (timeStamp: number): any => {
@@ -27,6 +19,14 @@ const formatTime = (timeStamp: number): any => {
   }
 };
 
+interface Props {
+  msg: string;
+  approved: boolean;
+  timeStamp: number;
+  onApprove?: () => void;
+  onReject?: () => void;
+}
+
 const RenderPendingPost: FC<Props> = ({
   msg,
   approved,
@@ -40,10 +40,12 @@ const RenderPendingPost: FC<Props> = ({
         <Text>{msg}</Text>
         <Text>{formatTime(timeStamp)}</Text>
       </View>
-      <View style={styles.buttons}>
-        <ButtonComponent title="Approve" onPress={onApprove} />
-        <ButtonComponent title="Reject" onPress={onReject} />
-      </View>
+      {!approved && (
+        <View style={styles.buttons}>
+          <ButtonComponent title="Approve" onPress={onApprove} />
+          <ButtonComponent title="Reject" onPress={onReject} />
+        </View>
+      )}
     </View>
   );
 };

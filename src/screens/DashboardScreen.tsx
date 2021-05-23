@@ -7,12 +7,22 @@ const DashboardScreen: FC = () => {
   const [posts, setPosts] = useState<any>(null);
 
   const fetchPendingPosts = async () => {
-    const posts = await firebase
+    // const posts = await firebase
+    //   .firestore()
+    //   .collection('posts')
+    //   .where('approved', '==', false)
+    //   .get();
+    // setPosts([...posts.docs]);
+
+    //real-time
+    firebase
       .firestore()
       .collection('posts')
       .where('approved', '==', false)
-      .get();
-    setPosts([...posts.docs]);
+      .onSnapshot(querySnapShot => {
+        const documents = querySnapShot.docs;
+        setPosts(documents);
+      });
   };
 
   const onApprove = async (id: string) => {
